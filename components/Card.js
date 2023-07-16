@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   nbText: {
     fontFamily: "open-sans-700",
     color: "rgba(255,255,255,1)",
-    height: 16,
+    height: 30,
     width: 20,
     marginTop: 1,
     marginLeft: 10

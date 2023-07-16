@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     top: 26,
     left: 0,
     position: "absolute",
-    fontFamily: "open-sans-800",
+    fontFamily: "open-sans-700",
     color: "rgba(255,255,255,1)",
     height: 22,
     width: 156,

@@ -15,7 +15,7 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="ome" options={{ headerShown: false }} component={Home} />
+      <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="Details" component={DetailsScreen} />
     </HomeStack.Navigator>
   );
@@ -29,6 +29,7 @@ export default function App() {
     'instrument-sans-regular': require('./assets/fonts/instrument-sans-regular.ttf'),
     'open-sans-700': require('./assets/fonts/open-sans-700.ttf'),
     'roboto-regular': require('./assets/fonts/roboto-regular.ttf'),
+    'integralCF-Bold': require('./assets/fonts/IntegralCF-Bold.otf'),
     // add other fonts as needed
   });
 
@@ -55,10 +56,10 @@ export default function App() {
   } else {
     return (
       <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" options={{ headerShown: false }} component={HomeStackScreen} />
-        <Tab.Screen name="Stats" component={Stats} />
-      </Tab.Navigator>
+        <Tab.Navigator>
+          <Tab.Screen name="HomeTab" options={{ headerShown: false }} component={HomeStackScreen} />
+          <Tab.Screen name="Stats" component={Stats} />
+        </Tab.Navigator>
     </NavigationContainer>
     );
   }

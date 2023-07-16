@@ -66,14 +66,23 @@ const NewP = [
 function Home(props) {
 
   const navigation = useNavigation()
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Welcome!',
+      headerStyle: {
+        backgroundColor: '#000000',
+      },
+      headerTintColor: '#fff',
+      headerRight: () => (
+        <Icon name="bell-o" style={styles.icon2}></Icon>
+      ),
+    });
+  }, [navigation]);
+
   return (
 
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.welcome}>WELCOME !</Text>
-        <Icon name="bell-o" style={styles.icon2}></Icon>
-      </View>
       <ScrollView>
       <View style={styles.listHeader}>
         <Text style={styles.listTitle}>Vos Programmes</Text>
@@ -116,6 +125,7 @@ const styles = StyleSheet.create({
   icon2: {
     color: "rgba(255,255,255,1)",
     fontSize: 25,
+    marginRight: 15
   },
   listTitle: {
     fontFamily: "open-sans-600",

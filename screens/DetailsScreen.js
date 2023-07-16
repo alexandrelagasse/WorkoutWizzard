@@ -3,6 +3,8 @@ import { StyleSheet, View, StatusBar, Text, Image } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import Prog from "../components/Prog";
 import { FlatList } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
 
 const progData = [
   {
@@ -23,21 +25,29 @@ const progData = [
 ]
 
 function DetailsScreen({route}) {
+  const navigation = useNavigation();
   const { id } = route.params;
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Workout',
+      headerStyle: {
+        backgroundColor: '#000000',
+      },
+      headerTintColor: '#fff',
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <EntypoIcon
+            name="chevron-with-circle-left"
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.group}>
-        <View style={styles.rect}>
-          <View style={styles.iconRow}>
-            <EntypoIcon
-              name="chevron-with-circle-left"
-              style={styles.icon}
-            ></EntypoIcon>
-            <Text style={styles.workoutExercices}>Workout Exercices</Text>
-          </View>
-        </View>
-      </View>
       <View style={styles.group2}>
         <View style={styles.rect2}>
           <View style={styles.coachColumnRow}>
@@ -93,46 +103,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(28,28,30,1)"
   },
-  group: {
-    width: 316,
-    height: 72,
-    marginTop: 82,
-    marginLeft: 29
-  },
-  rect: {
-    width: 316,
-    height: 72,
-    backgroundColor: "rgba(28,28,30,1)",
-    flexDirection: "row"
-  },
   icon: {
     color: "rgba(255,255,255,1)",
     fontSize: 35,
     height: 39,
-    width: 35
-  },
-  workoutExercices: {
-    fontFamily: "open-sans-700",
-    color: "rgba(255,255,255,1)",
-    height: 29,
-    width: 193,
-    fontSize: 20,
-    marginLeft: 33,
-    marginTop: 5
-  },
-  iconRow: {
-    height: 39,
-    flexDirection: "row",
-    flex: 1,
-    marginRight: 38,
-    marginLeft: 17,
-    marginTop: 16
+    width: 35,
+    marginLeft: 15
   },
   group2: {
     width: 335,
     height: 235,
-    marginLeft: 19,
-    marginBottom: 19
+    marginLeft: 27,
+    marginBottom: 19,
+    marginTop: 20
   },
   rect2: {
     width: 335,
