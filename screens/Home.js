@@ -65,7 +65,7 @@ const NewP = [
 
 function Home(props) {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -91,6 +91,7 @@ function Home(props) {
       <List DATA={Data} navigation={navigation}></List>
 
       <Text style={styles.listTitle}>Workout Categories</Text>
+      <Text style={styles.listSubtitle}>See All</Text>
       <TabButton />
 
       <Text style={styles.listTitle}>Les Programmes du moments</Text>

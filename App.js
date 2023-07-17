@@ -8,6 +8,7 @@ import Home from './screens/Home';
 import Stats from './screens/Stats';
 import DetailsScreen from './screens/DetailsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import DetailsWorkout from './screens/DetailsWorkout';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -17,6 +18,7 @@ function HomeStackScreen() {
     <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="Details" component={DetailsScreen} />
+      <HomeStack.Screen name="DetailsWorkout" component={DetailsWorkout}/>
     </HomeStack.Navigator>
   );
 }

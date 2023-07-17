@@ -1,29 +1,35 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Entypo";
 
-function Prog({image, time, title, muscle}) {
+function Prog({ image, time, title, muscle, id }) {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <View style={styles.rect}>
-        <View style={styles.imageRow}>
-          <Image
-            source={image}
-            resizeMode="contain"
-            style={styles.image}
-          ></Image>
-          <View style={styles.time1H30Stack}>
-            <Text style={styles.time1H30}>Time {time}</Text>
-            <View style={styles.pecTricepsStack}>
-              <Text style={styles.pecTriceps}>{muscle}</Text>
-              <Icon name="chevron-small-right" style={styles.back}></Icon>
-              <Text style={styles.muscles}>Muscles:</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('DetailsWorkout', { id: `id/${id}` })}>
+      <View style={styles.container}>
+        <View style={styles.rect}>
+          <View style={styles.imageRow}>
+            <Image
+              source={image}
+              resizeMode="contain"
+              style={styles.image}
+            ></Image>
+            <View style={styles.time1H30Stack}>
+              <Text style={styles.time1H30}>Time {time}</Text>
+              <View style={styles.pecTricepsStack}>
+                <Text style={styles.pecTriceps}>{muscle}</Text>
+                <Icon name="chevron-small-right" style={styles.back}></Icon>
+                <Text style={styles.muscles}>Muscles:</Text>
+              </View>
+              <Text style={styles.title}>| {title}</Text>
             </View>
-            <Text style={styles.title}>| {title}</Text>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

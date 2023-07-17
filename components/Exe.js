@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 
-function Index(props) {
+function Index({image, title, rep, serie, repos}) {
   return (
     <View style={styles.container}>
       <View style={styles.imageRow}>
         <Image
-          source={require("./assets/images/dvpch.jpeg")}
-          resizeMode="stretch"
+          source={image}
+          resizeMode="cover"
           style={styles.image}
         ></Image>
         <View style={styles.titleColumn}>
-          <Text style={styles.title}>Développé couché à la barre</Text>
-          <Text style={styles.rep}>10 répétitions</Text>
-          <Text style={styles.serie}>4 séries</Text>
-          <Text style={styles.repos030}>repos 0:30</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.rep}>{rep} répétitions</Text>
+          <Text style={styles.serie}>{serie} séries</Text>
+          <Text style={styles.repos030}>{repos} repos</Text>
         </View>
       </View>
     </View>
@@ -23,48 +23,48 @@ function Index(props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 315,
-    height: 113
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#28282A',
+    borderRadius: 25,
+    marginVertical: 5,
   },
   image: {
     width: 110,
     height: 113,
     borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25
+    borderBottomLeftRadius: 25,
+    marginRight: 10,
   },
   title: {
     fontFamily: "open-sans-700",
     color: "rgba(255,255,255,1)",
-    height: 39,
-    width: 196
+    marginBottom: 5,
   },
   rep: {
     fontFamily: "open-sans-regular",
     color: "rgba(255,255,255,1)",
     fontSize: 11,
-    marginTop: 3
+    marginBottom: 5,
   },
   serie: {
     fontFamily: "open-sans-regular",
     color: "rgba(255,255,255,1)",
     fontSize: 11,
-    marginLeft: 79
+    marginBottom: 5,
   },
   repos030: {
     fontFamily: "open-sans-regular",
     color: "rgba(208,253,62,1)",
     fontSize: 11,
-    marginTop: 22
   },
   titleColumn: {
-    width: 196,
-    marginLeft: 9,
-    marginTop: 18,
-    marginBottom: 31
+    flex: 1,
   },
   imageRow: {
-    height: 113,
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: 'center',
   }
 });
 

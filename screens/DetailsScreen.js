@@ -20,9 +20,29 @@ const progData = [
     time: "1H45",
     title: "Day 02 - Jambes",
     muscle: "Jambes"
+  },
+  {
+    id: "3",
+    image: require("../assets/images/cpl.png"),
+    time: "1H45",
+    title: "Day 02 - Jambes",
+    muscle: "Jambes"
+  },
+  {
+    id: "4",
+    image: require("../assets/images/cpl.png"),
+    time: "1H45",
+    title: "Day 02 - Jambes",
+    muscle: "Jambes"
+  },  {
+    id: "5",
+    image: require("../assets/images/cpl.png"),
+    time: "1H45",
+    title: "Day 02 - Jambes",
+    muscle: "Jambes"
   }
 
-]
+];
 
 function DetailsScreen({route}) {
   const navigation = useNavigation();
@@ -88,6 +108,7 @@ function DetailsScreen({route}) {
             image={item.image}
             muscle={item.muscle}
             title={item.title}
+            id={item.id}
             />}
         keyExtractor={item => item.id}
         ItemSeparatorComponent={() => <View style={{ height: 20}} />}
