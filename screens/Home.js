@@ -4,6 +4,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import List from "../components/List";
 import TabButton from "../components/TabButton";
 import { useNavigation } from "@react-navigation/native";
+import HomeHeaderInfo from "../components/HomeHeaderInfo";
+import { TouchableOpacity } from "react-native";
+import { Image } from "react-native";
 
 const Data = [
   {
@@ -74,8 +77,23 @@ function Home(props) {
         backgroundColor: '#000000',
       },
       headerTintColor: '#fff',
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Image
+            source={require('../assets/images/cpl.png')}
+            style={styles.profileImage}
+          />
+        </TouchableOpacity>
+      ),
       headerRight: () => (
-        <Icon name="bell-o" style={styles.icon2}></Icon>
+        <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+          <View>
+            <Icon name="bell-o" style={styles.icon2}></Icon>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>3</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       ),
     });
   }, [navigation]);
@@ -84,14 +102,17 @@ function Home(props) {
 
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <HomeHeaderInfo />
       <View style={styles.listHeader}>
         <Text style={styles.listTitle}>Vos Programmes</Text>
         <Text style={styles.listSubtitle}>Mar 11 sept</Text>
       </View>
       <List DATA={Data} navigation={navigation}></List>
 
+      <View style={styles.listHeader}>
       <Text style={styles.listTitle}>Workout Categories</Text>
       <Text style={styles.listSubtitle}>See All</Text>
+      </View>
       <TabButton />
 
       <Text style={styles.listTitle}>Les Programmes du moments</Text>
@@ -108,6 +129,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(28,28,30,1)"
+  },
+  badge: {
+    position: 'absolute',
+    right: 10,
+    top: -5,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 15,
+    height: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  profileImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    marginLeft: 15,
   },
   header: {
     flexDirection: "row",

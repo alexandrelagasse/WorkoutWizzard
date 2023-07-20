@@ -13,7 +13,7 @@ function Card({ title, time, image, nb, id, navigation }) {
       <View style={styles.buttonStack}>
         <ImageBackground
           source={image}
-          resizeMode="contain"
+          resizeMode="cover"
           style={styles.image}
           imageStyle={styles.image_imageStyle}
         >

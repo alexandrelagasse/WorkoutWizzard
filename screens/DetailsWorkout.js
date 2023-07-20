@@ -137,15 +137,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     button: {
-        width: "100%",
+        width: "90%", // réduire la largeur à 90%
         height: 40,
         backgroundColor: "rgba(208,253,62,1)",
         borderRadius: 100,
         justifyContent: "center",
         alignItems: "center",
-        position: 'center',
-        bottom: 0,
-    },
+        position: 'absolute', // positionner absolument
+        bottom: 20, // décaler de 20 du bas
+        alignSelf: 'center', // centrer horizontalement
+      },
     rect2Row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -201,9 +202,10 @@ const styles = StyleSheet.create({
     },
     exe: {
         width: "100%",
-        height: 113,
+        height: 150,
         marginTop: 24,
-    },
+        marginBottom: 10,
+      },
     startWorkout: {
         fontFamily: "open-sans-600",
         color: "#121212",
