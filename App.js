@@ -9,9 +9,11 @@ import Stats from './screens/Stats';
 import DetailsScreen from './screens/DetailsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetailsWorkout from './screens/DetailsWorkout';
+import Seance from './screens/Seance';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const MainStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
@@ -20,6 +22,24 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Details" component={DetailsScreen} />
       <HomeStack.Screen name="DetailsWorkout" component={DetailsWorkout}/>
     </HomeStack.Navigator>
+  );
+}
+
+function TabNavigator() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="HomeTab" options={{ headerShown: false }} component={HomeStackScreen} />
+      <Tab.Screen name="Stats" component={Stats} />
+    </Tab.Navigator>
+  );
+}
+
+function MainStackScreen() {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen name="TabNavigator" options={{ headerShown: false }} component={TabNavigator} />
+      <MainStack.Screen name="Seance" options={{headerShown: false}} component={Seance} />
+    </MainStack.Navigator>
   );
 }
 
@@ -32,6 +52,7 @@ export default function App() {
     'open-sans-700': require('./assets/fonts/open-sans-700.ttf'),
     'roboto-regular': require('./assets/fonts/roboto-regular.ttf'),
     'integralCF-Bold': require('./assets/fonts/IntegralCF-Bold.otf'),
+    'open-sans-800': require('./assets/fonts/open-sans-800.ttf'),
     // add other fonts as needed
   });
 
@@ -58,11 +79,8 @@ export default function App() {
   } else {
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="HomeTab" options={{ headerShown: false }} component={HomeStackScreen} />
-          <Tab.Screen name="Stats" component={Stats} />
-        </Tab.Navigator>
-    </NavigationContainer>
+        <MainStackScreen />
+      </NavigationContainer>
     );
   }
 }

@@ -65,23 +65,23 @@ const screenHeight = Dimensions.get('window').height;
 
 function DetailsWorkout(props) {
     const navigation = useNavigation();
-  
+
     React.useLayoutEffect(() => {
-      navigation.setOptions({
-        headerTitle: 'Exercices',
-        headerStyle: {
-          backgroundColor: '#000000',
-        },
-        headerTintColor: '#fff',
-        headerLeft: () => (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <EntypoIcon
-              name="chevron-with-circle-left"
-              style={styles.iconBack}
-            />
-          </TouchableOpacity>
-        ),
-      });
+        navigation.setOptions({
+            headerTitle: 'Exercices',
+            headerStyle: {
+                backgroundColor: '#000000',
+            },
+            headerTintColor: '#fff',
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <EntypoIcon
+                        name="chevron-with-circle-left"
+                        style={styles.iconBack}
+                    />
+                </TouchableOpacity>
+            ),
+        });
     }, [navigation]);
     return (
         <View style={styles.container}>
@@ -117,7 +117,10 @@ function DetailsWorkout(props) {
                     ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
                     contentContainerStyle={{ marginLeft: 20 }}
                 />
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Seance')}
+                >
                     <Text style={styles.startWorkout}>Start Workout</Text>
                 </TouchableOpacity>
             </View>
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
         position: 'absolute', // positionner absolument
         bottom: 20, // décaler de 20 du bas
         alignSelf: 'center', // centrer horizontalement
-      },
+    },
     rect2Row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -205,7 +208,7 @@ const styles = StyleSheet.create({
         height: 150,
         marginTop: 24,
         marginBottom: 10,
-      },
+    },
     startWorkout: {
         fontFamily: "open-sans-600",
         color: "#121212",
