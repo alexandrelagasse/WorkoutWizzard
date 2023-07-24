@@ -11,108 +11,77 @@ function Prog({ image, time, title, muscle, id }) {
     <TouchableOpacity onPress={() => navigation.navigate('DetailsWorkout', { id: `id/${id}` })}>
       <View style={styles.container}>
         <View style={styles.rect}>
-          <View style={styles.imageRow}>
-            <Image
-              source={image}
-              resizeMode="contain"
-              style={styles.image}
-            ></Image>
-            <View style={styles.time1H30Stack}>
-              <Text style={styles.time1H30}>Time {time}</Text>
-              <View style={styles.pecTricepsStack}>
-                <Text style={styles.pecTriceps}>{muscle}</Text>
-                <Icon name="chevron-small-right" style={styles.back}></Icon>
-                <Text style={styles.muscles}>Muscles:</Text>
-              </View>
-              <Text style={styles.title}>| {title}</Text>
+          <Image source={image} resizeMode="cover" style={styles.image} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.title}>| {title}</Text>
+            <Text style={styles.time}>Time {time}</Text>
+            <View style={styles.musclesContainer}>
+              <Text style={styles.muscles}>Muscles:</Text>
+              <Text style={styles.pecTriceps}>{muscle}</Text>
             </View>
+            <Icon name="chevron-small-right" style={styles.back} />
           </View>
         </View>
       </View>
     </TouchableOpacity>
-  );
+  );  
 }
-
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
   rect: {
-    width: 350,
+    width: '90%',
     height: 126,
     backgroundColor: "rgba(44,44,46,1)",
     borderRadius: 25,
     flexDirection: "row",
+    overflow: 'hidden',
+    alignItems: 'center',
   },
   image: {
-    width: 94,
-    height: 65
+    width: '35%',
+    height: '100%',
   },
-  time1H30: {
-    top: 26,
-    left: 0,
-    position: "absolute",
-    fontFamily: "open-sans-700",
-    color: "rgba(255,255,255,1)",
-    height: 22,
-    width: 156,
-    fontSize: 12
-  },
-  pecTriceps: {
-    top: 36,
-    left: 65,
-    position: "absolute",
-    fontFamily: "open-sans-600",
-    color: "rgba(208,253,62,1)",
-    height: 17,
-    width: 124,
-    fontSize: 12
-  },
-  back: {
-    top: 0,
-    left: 172,
-    position: "absolute",
-    color: "rgba(255,255,255,1)",
-    fontSize: 35,
-    height: 39,
-    width: 35
-  },
-  muscles: {
-    top: 35,
-    left: 0,
-    position: "absolute",
-    fontFamily: "open-sans-600",
-    color: "rgba(255,255,255,1)",
-    height: 20,
-    width: 68
-  },
-  pecTricepsStack: {
-    top: 17,
-    left: 0,
-    width: 207,
-    height: 55,
-    position: "absolute"
+  infoContainer: {
+    marginLeft: 15,
+    justifyContent: 'center',
+    width: '55%',
   },
   title: {
-    top: 0,
-    left: 0,
-    position: "absolute",
     fontFamily: "open-sans-600",
     color: "rgba(255,255,255,1)",
-    height: 22,
-    width: 156
+    fontSize: 14,
+    marginBottom: 5,
   },
-  time1H30Stack: {
-    width: 207,
-    height: 72,
-    marginLeft: 17
+  time: {
+    fontFamily: "open-sans-700",
+    color: "rgba(255,255,255,1)",
+    fontSize: 12,
+    marginBottom: 5,
   },
-  imageRow: {
-    height: 72,
-    flexDirection: "row",
-    flex: 1,
-    marginRight: 10,
-    marginLeft: 22,
-    marginTop: 30
-  }
+  musclesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  muscles: {
+    fontFamily: "open-sans-600",
+    color: "rgba(255,255,255,1)",
+  },
+  pecTriceps: {
+    fontFamily: "open-sans-600",
+    color: "rgba(208,253,62,1)",
+    fontSize: 12,
+    marginLeft: 5,
+  },
+  back: {
+    marginLeft: 'auto',
+    color: "rgba(255,255,255,1)",
+    fontSize: 35,
+  },
 });
+
+
 
 export default Prog;

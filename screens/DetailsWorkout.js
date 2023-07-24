@@ -12,7 +12,6 @@ import {
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 import Exe from "../components/Exe";
-import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const Data = [
@@ -69,31 +68,35 @@ function DetailsWorkout(props) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: 'Exercices',
-            headerStyle: {
-                backgroundColor: '#000000',
-            },
+            headerTransparent: true,
             headerTintColor: '#fff',
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <EntypoIcon
-                        name="chevron-with-circle-left"
+                        name="chevron-left"
                         style={styles.iconBack}
                     />
                 </TouchableOpacity>
             ),
         });
     }, [navigation]);
-    return (
-        <View style={styles.container}>
+    
+    const ListFooter = () => (
+        <View style={{ height: 65 }} />
+    );
+
+    const ListHeader = () => (
+        <>
             <ImageBackground
                 source={require("../assets/images/gain.jpeg")}
                 resizeMode="cover"
                 style={[styles.image, { height: screenHeight * 0.4 }]}
             >
             </ImageBackground>
-            <View style={[styles.rect3, { height: screenHeight * 0.6 }]}>
+            <View style={[styles.rect3]}>
                 <Text style={styles.loremIpsum}>Day 01 - Pec / Triceps</Text>
                 <Text style={styles.programmePpl}>Programme PPL</Text>
+                <Text style={styles.description}>Cette séance de Pec / Triceps est idéale pour développer vos muscles de manière équilibrée. </Text>
                 <View style={styles.rect2Row}>
                     <View style={styles.rect2}>
                         <IoniconsIcon
@@ -102,37 +105,37 @@ function DetailsWorkout(props) {
                         ></IoniconsIcon>
                         <Text style={styles.min}>120 min</Text>
                     </View>
-                    <View style={styles.rect2}>
-                        <IoniconsIcon
-                            name="ios-fitness"
-                            style={styles.icon}
-                        ></IoniconsIcon>
-                        <Text style={styles.min}>10 exe</Text>
-                    </View>
                 </View>
-                <FlatList
-                    data={Data}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-                    contentContainerStyle={{ marginLeft: 20 }}
-                />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('Seance')}
-                >
-                    <Text style={styles.startWorkout}>Start Workout</Text>
-                </TouchableOpacity>
             </View>
+        </>
+    );
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                data={Data}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+                ListHeaderComponent={ListHeader} // Use ListHeaderComponent
+                ListFooterComponent={ListFooter}
+                style={{backgroundColor: "rgba(28,28,30,1)"}} // Ajout d'une couleur de fond à la FlatList
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Seance')}
+            >
+                <Text style={styles.startWorkout}>Start Workout</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "rgba(28,28,30,1)",
     },
     list: {
         flex: 1,
@@ -140,22 +143,28 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     button: {
-        width: "90%", // réduire la largeur à 90%
+        width: "90%",
         height: 40,
         backgroundColor: "rgba(208,253,62,1)",
         borderRadius: 100,
         justifyContent: "center",
         alignItems: "center",
-        position: 'absolute', // positionner absolument
-        bottom: 20, // décaler de 20 du bas
-        alignSelf: 'center', // centrer horizontalement
+        position: 'absolute',
+        bottom: 20,
+        alignSelf: 'center',
+    },
+    description: {
+        fontFamily: "open-sans-regular",
+        color: "rgba(255,255,255,1)",
+        fontSize: 14,
+        marginTop: 10,
     },
     rect2Row: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
         alignItems: 'center',
         marginTop: 10,
-        marginHorizontal: 20,
+        marginBottom: 0,
+        marginHorizontal: 0,
     },
     rect2: {
         flexDirection: 'row',
@@ -191,7 +200,6 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 38,
         borderTopRightRadius: 38,
         padding: 36,
-        marginTop: "auto",
     },
     loremIpsum: {
         fontFamily: "open-sans-600",

@@ -1,23 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 
-
-function Exe({image, title, rep, series, repos}) {
-  console.log(image, title, rep, series, repos)
+function Exe({ image, title, rep, series, repos }) {
   return (
     <View style={styles.container}>
-      <View style={styles.imageRow}>
-        <Image
-          source={image}
-          resizeMode="cover"
-          style={styles.image}
-        ></Image>
-        <View style={styles.titleColumn}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.rep}>{rep} répétitions</Text>
-          <Text style={styles.series}>{series} séries</Text>
-          <Text style={styles.repos030}>{repos} repos</Text>
-        </View>
+      <View style={styles.imageWrapper}>
+        <Image source={image} resizeMode="cover" style={styles.image} />
+      </View>
+      <View style={styles.textWrapper}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.rep}>{rep} répétitions</Text>
+        <Text style={styles.series}>{series} séries</Text>
+        <Text style={styles.repos030}>{repos} repos</Text>
       </View>
     </View>
   );
@@ -25,19 +19,26 @@ function Exe({image, title, rep, series, repos}) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
     padding: 10,
-    backgroundColor: '#28282A',
+    backgroundColor: "#28282A",
     borderRadius: 25,
     marginVertical: 5,
+    alignItems: "center",
+  },
+  imageWrapper: {
+    height: 100,
+    width: 100,
+    borderRadius: 25,
+    overflow: "hidden",
   },
   image: {
-    width: 110,
-    height: 113,
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
-    marginRight: 10,
+    height: "100%",
+    width: "100%",
+  },
+  textWrapper: {
+    marginLeft: 10,
+    flex: 1,
   },
   title: {
     fontFamily: "open-sans-700",
@@ -61,13 +62,6 @@ const styles = StyleSheet.create({
     color: "rgba(208,253,62,1)",
     fontSize: 11,
   },
-  titleColumn: {
-    flex: 1,
-  },
-  imageRow: {
-    flexDirection: "row",
-    alignItems: 'center',
-  }
 });
 
 export default Exe;
