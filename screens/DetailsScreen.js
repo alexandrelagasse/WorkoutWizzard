@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { StyleSheet, View, StatusBar, Text, Image } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, StatusBar, Text, Image, Modal, Button } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import Prog from "../components/Prog";
 import { FlatList } from "react-native-gesture-handler";
@@ -48,21 +48,45 @@ function DetailsScreen({route}) {
   const navigation = useNavigation();
   const { id } = route.params;
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModify = () => {
+    console.log('Modification clicked');
+    // implémentez ici votre logique de modification
+    setModalVisible(!modalVisible);
+  }
+
+  const handleDelete = () => {
+    console.log('Suppression clicked');
+    // implémentez ici votre logique de suppression
+    setModalVisible(!modalVisible);
+  }
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Workout',
       headerStyle: {
-        backgroundColor: '#000000',
+        backgroundColor: 'rgba(28,28,30,1)'
       },
       headerTintColor: '#fff',
+      headerShadowVisible: false,
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <EntypoIcon
-            name="chevron-with-circle-left"
+            name="chevron-left"
             style={styles.icon}
           />
         </TouchableOpacity>
       ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <EntypoIcon
+            name="dots-three-vertical"
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      ),
+
     });
   }, [navigation]);
   return (
@@ -115,6 +139,31 @@ function DetailsScreen({route}) {
         contentContainerStyle={{ marginLeft: 20 }}
 
       />
+<Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(!modalVisible)}>
+              <EntypoIcon
+                name="cross"
+                style={styles.iconClose}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton} onPress={handleModify}>
+              <Text style={styles.modalButtonText}>Modification</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton} onPress={handleDelete}>
+              <Text style={styles.modalButtonText}>Suppression</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -126,10 +175,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "rgba(255,255,255,1)",
-    fontSize: 35,
+    fontSize: 25,
     height: 39,
     width: 35,
-    marginLeft: 15
+    marginLeft: 10,
+    marginRight: 5
   },
   group2: {
     width: 335,
@@ -279,6 +329,44 @@ const styles = StyleSheet.create({
     width: 35,
     height: 39,
     marginLeft: 19,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: '80%',
+    backgroundColor: 'black',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+  },
+  iconClose: {
+    color: "white",
+    fontSize: 30,
+  },
+  modalButton: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 10,
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  modalButtonText: {
+    fontFamily: 'open-sans-700',
   },
 });
 

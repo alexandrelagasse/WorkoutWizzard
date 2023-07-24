@@ -7,7 +7,7 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
-    Dimensions
+    Dimensions,
 } from "react-native";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
@@ -152,18 +152,19 @@ const styles = StyleSheet.create({
     },
     rect2Row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         marginTop: 10,
+        marginHorizontal: 20,
     },
     rect2: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(44,44,46,1)',
-        borderRadius: 15,
-        padding: 5,
-        width: 100,
+        borderRadius: 20,
+        padding: 10,
+        width: 120,
     },
     icon: {
         color: 'rgba(255,255,255,1)',
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     min: {
         fontFamily: 'open-sans-regular',
         color: 'rgba(255,255,255,1)',
-        fontSize: 12,
+        fontSize: 14, // Augmentez la taille de la police pour un meilleur affichage sur les étiquettes plus grandes.
     },
     image: {
         flex: 1,

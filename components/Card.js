@@ -7,7 +7,21 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-function Card({ title, time, image, nb, id, navigation }) {
+function Card({ title, time, image, label, id, navigation }) {
+  const renderLabel = () => {
+    if (!label) return null;
+
+    let backgroundColor;
+    if (label === 'pro') backgroundColor = 'blue';
+    else if (label === 'ia') backgroundColor = 'red';
+
+    return (
+      <View style={[styles.labelContainer, { backgroundColor }]}>
+        <Text style={styles.labelText}>{label.toUpperCase()}</Text>
+      </View>
+    )
+  };
+
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Details', { id })}>
       <View style={styles.buttonStack}>
@@ -20,9 +34,7 @@ function Card({ title, time, image, nb, id, navigation }) {
           <Text style={styles.titleText}>{title}</Text>
           <View style={styles.infoRow}>
             <Text style={styles.timeText}>| {time}</Text>
-            <View style={styles.nbContainer}>
-              <Text style={styles.nbText}>{nb}/j</Text>
-            </View>
+            {renderLabel()}
           </View>
         </ImageBackground>
       </View>
@@ -59,22 +71,19 @@ const styles = StyleSheet.create({
     width: 46,
     marginTop: 6
   },
-  nbContainer: {
+  labelContainer: {
     width: 37,
     height: 23,
-    backgroundColor: "rgba(246,168,0,1)",
-    borderRadius: 100,
+    borderRadius: 3,
     borderWidth: 1,
     borderColor: "#000000",
-    marginLeft: 200
+    marginLeft: 200,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  nbText: {
+  labelText: {
     fontFamily: "open-sans-700",
-    color: "rgba(255,255,255,1)",
-    height: 30,
-    width: 20,
-    marginTop: 1,
-    marginLeft: 10
+    color: "rgba(255,255,255,1)"
   },
   infoRow: {
     height: 27,

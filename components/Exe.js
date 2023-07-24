@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 
-function Index({image, title, rep, serie, repos}) {
+
+function Exe({image, title, rep, series, repos}) {
+  console.log(image, title, rep, series, repos)
   return (
     <View style={styles.container}>
       <View style={styles.imageRow}>
@@ -13,7 +15,7 @@ function Index({image, title, rep, serie, repos}) {
         <View style={styles.titleColumn}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.rep}>{rep} répétitions</Text>
-          <Text style={styles.serie}>{serie} séries</Text>
+          <Text style={styles.series}>{series} séries</Text>
           <Text style={styles.repos030}>{repos} repos</Text>
         </View>
       </View>
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginBottom: 5,
   },
-  serie: {
+  series: {
     fontFamily: "open-sans-regular",
     color: "rgba(255,255,255,1)",
     fontSize: 11,
@@ -68,4 +70,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Index;
+export default Exe;

@@ -14,6 +14,7 @@ const List = ({ DATA, navigation }) => (
         nb={item.nb}
         navigation={navigation}
         id={item.id}
+        label={item.label}
       />
     }
     keyExtractor={item => item.id}

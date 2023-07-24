@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import HomeHeaderInfo from "../components/HomeHeaderInfo";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
+import { RefreshControl } from "react-native";
 
 const Data = [
   {
@@ -14,14 +15,16 @@ const Data = [
     title: "Programme Split",
     time : "1h30",
     nb : "3",
-    image: require("../assets/images/image21.jpg")
+    image: require("../assets/images/image21.jpg"),
+    label: "pro"
   },
   {
     id: "2",
     title: "Programme PPL",
     time : "1h30",
     nb : "3",
-    image: require("../assets/images/poid.jpg")
+    image: require("../assets/images/poid.jpg"),
+    label: "ia"
   },
 ];
 
@@ -69,14 +72,25 @@ const NewP = [
 function Home(props) {
 
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    // reload your data here...
+
+    setRefreshing(false);
+  }, []);
+
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Welcome!',
       headerStyle: {
-        backgroundColor: '#000000',
+        backgroundColor: 'rgba(28,28,30,1)'
       },
       headerTintColor: '#fff',
+      headerShadowVisible: false,
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <Image
@@ -101,8 +115,16 @@ function Home(props) {
   return (
 
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <HomeHeaderInfo />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#D0FD3E']}
+            tintColor={'#D0FD3E'}
+          />
+        }
+      >
       <View style={styles.listHeader}>
         <Text style={styles.listTitle}>Vos Programmes</Text>
         <Text style={styles.listSubtitle}>Mar 11 sept</Text>
@@ -128,7 +150,8 @@ function Home(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(28,28,30,1)"
+    backgroundColor: "rgba(28,28,30,1)",
+    padding: 15,  // Ajoutez un padding pour donner de l'espace aux éléments à l'intérieur du conteneur
   },
   badge: {
     position: 'absolute',
@@ -151,20 +174,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 15,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#000000",
-    paddingHorizontal: 15,
-    paddingTop: StatusBar.currentHeight,
-    paddingBottom: 15,
-  },
-  welcome: {
-    fontFamily: "open-sans-regular",
-    color: "rgba(255,255,255,1)",
-    fontSize: 40
-  },
   icon2: {
     color: "rgba(255,255,255,1)",
     fontSize: 25,
@@ -175,19 +184,20 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     fontSize: 17,
     marginTop: 20,
-    marginLeft: 36
+    marginLeft: 15,  // Changez la marge pour correspondre à celle du conteneur
   },
   listSubtitle: {
     fontFamily: "open-sans-regular",
     color: "#D0FD3E",
     fontSize: 12,
     marginTop: 20,
-    marginRight: 36,
+    marginRight: 15, // Changez la marge pour correspondre à celle du conteneur
     textAlign: 'right',
   },
   listHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center', // Assurez-vous que les éléments sont centrés verticalement
   },
 });
 

@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-600",
     color: "rgba(255,255,255,1)",
     height: 20,
-    width: 68,
-    textDecorationLine: "underline"
+    width: 68
   },
   pecTricepsStack: {
     top: 17,
