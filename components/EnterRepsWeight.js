@@ -1,139 +1,253 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, Animated } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import SimpleLineIconsIcon from "react-native-vector-icons/SimpleLineIcons";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
-function EnterRepsWeight(props) {
-  return (
-    <View style={[styles.container, props.style]}>
-      <View style={styles.eclipseSerieStackColumnRow}>
-        <View style={styles.eclipseSerieStackColumn}>
-          <View style={styles.eclipseSerieStack}>
-            <Svg viewBox="0 0 14.68 15.16" style={styles.eclipseSerie}>
-              <Ellipse
-                stroke="rgba(230, 230, 230,1)"
-                strokeWidth={0}
-                fill="rgba(230, 230, 230,1)"
-                cx={7}
-                cy={8}
-                rx={7}
-                ry={8}
-              />
-            </Svg>
-            <Text style={styles.nbSer}>1</Text>
-          </View>
-          <View style={styles.progress} />
+function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props }) {
+    const [isPressedReps, setIsPressedReps] = useState(false);
+    const [isPressedWeight, setIsPressedWeight] = useState(false);
+
+    const fadeAnim = useState(new Animated.Value(0))[0];
+    const progressAnim = useState(new Animated.Value(0))[0];
+
+    const progressHeight = progressAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0%', '100%']
+    });
+
+    useEffect(() => {
+        if (isPressedReps && isPressedWeight) {
+            Animated.timing(progressAnim, {
+                toValue: 1,
+                duration: 1000,
+                useNativeDriver: false,
+            }).start();
+        }
+    }, [isPressedReps, isPressedWeight]);
+
+    const handlePressReps = () => {
+        if (onPress) {
+            onPress();
+        }
+        setIsPressedReps(!isPressedReps);
+        if (!isPressedReps && isPressedWeight) {
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+
+    const handlePressWeight = () => {
+        if (onPress) {
+            onPress();
+        }
+        setIsPressedWeight(!isPressedWeight);
+        if (!isPressedWeight && isPressedReps) {
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+    };
+
+    return (
+        <View style={[styles.container, props.style]}>
+            <View style={styles.eclipseSerieStackColumnRow}>
+                <View style={styles.eclipseSerieStackColumn}>
+                    <View style={styles.eclipseSerieStack}>
+                        <Svg viewBox="0 0 20 20" style={styles.eclipseSerie}>
+                            <Ellipse
+                                stroke="rgba(230, 230, 230,1)"
+                                strokeWidth={0}
+                                fill="rgba(28,28,30,1)"
+                                cx={10}
+                                cy={10}
+                                rx={10}
+                                ry={10}
+                            />
+                        </Svg>
+                        <Animated.View style={{ opacity: Animated.subtract(1, fadeAnim), position: 'absolute', top: 0, left: 6 }}>
+                            <Text style={styles.nbSer}>{nbSeries}</Text>
+                        </Animated.View>
+                        <Animated.View style={{ opacity: fadeAnim, position: 'absolute', top: 4, left: 5 }}>
+                            <FontAwesomeIcon name="check" color="rgba(208,253,62,1)" size={10} />
+                        </Animated.View>
+                    </View>
+                    {!hideProgressBar && (
+                        <View style={styles.progressContainer}>
+                            <Animated.View style={[styles.progress, { height: progressHeight }]} />
+                        </View>
+                    )}
+                </View>
+                <TouchableOpacity style={[styles.bouton, isPressedReps ? styles.boutonPressed : {}, { marginLeft: 75 }]} onPress={handlePressReps}>
+                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>10 reps</Text>
+                    <SimpleLineIconsIcon
+                        name="refresh"
+                        style={styles.icon}
+                    />
+                </TouchableOpacity>
+                <View style={styles.rect3} />
+                <TouchableOpacity style={[styles.bouton, isPressedWeight ? styles.boutonPressed : {}, { marginLeft: 40 }]} onPress={handlePressWeight}>
+                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>10 Kg</Text>
+                    <MaterialCommunityIconsIcon
+                        name="dumbbell"
+                        style={styles.icon}
+                    />
+                </TouchableOpacity>
+            </View>
         </View>
-        <View style={styles.boutonReps}>
-          <Text style={styles.nbreps}>10 reps</Text>
-          <SimpleLineIconsIcon
-            name="refresh"
-            style={styles.reps}
-          />
-        </View>
-        <View style={styles.rect3} />
-        <View style={styles.boutonWeight}>
-          <Text style={styles.nbWeight}>10 Kg</Text>
-          <MaterialCommunityIconsIcon
-            name="dumbbell"
-            style={styles.weight}
-          />
-        </View>
-      </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "rgba(28,28,30,1)",
-    borderRadius: 10
-  },
-  eclipseSerie: {
-    top: 0,
-    left: 0,
-    width: 15,
-    height: 15,
-    position: "absolute"
-  },
-  nbSer: {
-    top: 1,
-    left: 4,
-    position: "absolute",
-    fontFamily: "open-sans-600",
-    color: "#121212",
-    fontSize: 10
-  },
-  eclipseSerieStack: {
-    width: 15,
-    height: 15
-  },
-  progress: {
-    width: 1,
-    height: 127,
-    backgroundColor: "#E6E6E6",
-    marginLeft: 7
-  },
-  eclipseSerieStackColumn: {
-    width: 15,
-    marginTop: 16
-  },
-  boutonReps: {
-    width: 60,
-    height: 40,
-    backgroundColor: "rgba(44,44,46,1)",
-    borderRadius: 5,
-    marginLeft: 75,
-    marginTop: 17
-  },
-  nbreps: {
-    fontFamily: "open-sans-regular",
-    color: "rgba(255,255,255,1)",
-    textAlign: "center",
-    marginTop: -28,
-    marginLeft: 7
-  },
-  reps: {
-    color: "rgba(255,255,255,1)",
-    fontSize: 25,
-    marginTop: 15,
-    marginLeft: 18
-  },
-  rect3: {
-    width: 1,
-    height: 47,
-    backgroundColor: "rgba(230,230, 230,1)",
-    marginLeft: 38
-  },
-  boutonWeight: {
-    width: 60,
-    height: 40,
-    backgroundColor: "rgba(44,44,46,1)",
-    borderRadius: 5,
-    marginLeft: 40,
-    marginTop: 17
-  },
-  nbWeight: {
-    fontFamily: "open-sans-regular",
-    color: "rgba(255,255,255,1)",
-    textAlign: "center",
-    marginTop: -27,
-    marginLeft: 12
-  },
-  weight: {
-    color: "rgba(255,255,255,1)",
-    fontSize: 25,
-    marginTop: 15,
-    marginLeft: 18
-  },
-  eclipseSerieStackColumnRow: {
-    height: 158,
-    flexDirection: "row",
-    marginTop: 27,
-    marginLeft: -45,
-    marginRight: 42
-  },
+    container: {
+        backgroundColor: "rgba(28,28,30,1)",
+        borderRadius: 10
+    },
+    eclipseSerie: {
+        top: 0,
+        left: 0,
+        width: 20,
+        height: 20,
+        position: "absolute"
+    },
+    nbSer: {
+        position: "absolute",
+        fontFamily: "open-sans-600",
+        color: "rgba(255,255,255,1)",
+        fontSize: 14
+    },
+    eclipseSerieStack: {
+        width: 15,
+        height: 15
+    },
+    bouton: {
+        width: 60,
+        height: 40,
+        backgroundColor: "rgba(44,44,46,1)",
+        borderRadius: 5,
+        marginTop: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    boutonPressed: {
+        borderColor: "rgba(208,253,62,1)",
+        borderWidth: 1,
+    },
+    nb: {
+        fontFamily: "open-sans-regular",
+        color: "rgba(255,255,255,1)",
+        textAlign: "center",
+    },
+    icon: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 25,
+        marginTop: 10,
+    },
+    eclipseSerieStackColumnRow: {
+        height: 158,
+        flexDirection: "row",
+        alignItems: 'center',
+        marginTop: 27,
+        marginLeft: -45,
+        marginRight: 42
+    },
+    progressContainer: {
+        width: 3,
+        height: 122,
+        backgroundColor: 'rgba(44,44,46,1)',
+        marginTop: 5,
+        marginLeft: 8
+    },
+    progress: {
+        width: '100%',
+        height: '0%',
+        backgroundColor: 'rgba(208,253,62,1)',
+    },
+    eclipseSerieStackColumn: {
+        width: 15,
+        marginTop: 16
+    },
+    boutonReps: {
+        width: 60,
+        height: 40,
+        backgroundColor: "rgba(44,44,46,1)",
+        borderRadius: 5,
+        marginLeft: 75,
+        marginTop: 17,
+    },
+    boutonRepsPressed: {
+        width: 60,
+        height: 40,
+        backgroundColor: "rgba(44,44,46,1)",
+        borderRadius: 5,
+        marginLeft: 75,
+        marginTop: 17,
+        borderColor: "rgba(208,253,62,1)",
+        borderWidth: 1,
+    },
+    nbreps: {
+        fontFamily: "open-sans-regular",
+        color: "rgba(255,255,255,1)",
+        textAlign: "center",
+        marginTop: -28,
+        marginLeft: 7
+    },
+    reps: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 25,
+        marginTop: 15,
+        marginLeft: 18
+    },
+    rect3: {
+        width: 1,
+        height: 47,
+        backgroundColor: "rgba(230,230, 230,1)",
+        marginLeft: 38
+    },
+    boutonWeight: {
+        width: 60,
+        height: 40,
+        backgroundColor: "rgba(44,44,46,1)",
+        borderRadius: 5,
+        marginLeft: 40,
+        marginTop: 17
+    },
+    boutonWeightPressed: {
+        width: 60,
+        height: 40,
+        backgroundColor: "rgba(44,44,46,1)",
+        borderRadius: 5,
+        marginLeft: 40,
+        marginTop: 17,
+        borderColor: "rgba(208,253,62,1)",
+        borderWidth: 1,
+    },
+    nbWeight: {
+        fontFamily: "open-sans-regular",
+        color: "rgba(255,255,255,1)",
+        textAlign: "center",
+        marginTop: -27,
+        marginLeft: 12
+    },
+    weight: {
+        color: "rgba(255,255,255,1)",
+        fontSize: 25,
+        marginTop: 15,
+        marginLeft: 18
+    },
+    eclipseSerieStackColumnRow: {
+        height: 158,
+        flexDirection: "row",
+        marginTop: 27,
+        marginLeft: -45,
+        marginRight: 42
+    },
 });
 
 export default EnterRepsWeight;

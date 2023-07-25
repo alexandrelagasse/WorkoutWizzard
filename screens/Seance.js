@@ -11,15 +11,31 @@ function Seance(props) {
   const pages = [0, 1, 2, 3, 4];
   const [currentPage, setCurrentPage] = useState(0); // Page initiale est 0
 
-  const renderItem = ({ item }) => (
-    <EnterRepsWeight style={styles.enterRepsWeight} />
-  );
-
   const repsWeights = [
-    { id: '1', reps: 10, weight: 50 },
-    { id: '2', reps: 8, weight: 60 },
-    { id: '3', reps: 6, weight: 70 },
+    { id: '1', reps: 10, weight: 50},
+    { id: '2', reps: 8, weight: 60},
+    { id: '3', reps: 6, weight: 70},
   ];
+
+  const [itemsCompleted, setItemsCompleted] = useState(new Array(repsWeights.length).fill(false));
+
+  const renderItem = ({ item, index }) => {
+    const isLastItem = index === repsWeights.length - 1;
+    return (
+        <EnterRepsWeight 
+          style={styles.enterRepsWeight} 
+          hideProgressBar={isLastItem} 
+          disabled={index > 0 && !itemsCompleted[index - 1]}
+          nbSeries={index + 1}
+          onComplete={() => {
+            const newItemsCompleted = [...itemsCompleted];
+            newItemsCompleted[index] = true;
+            setItemsCompleted(newItemsCompleted);
+          }}
+        />
+    );
+};
+
 
   return (
     <View style={styles.container}>
@@ -69,6 +85,7 @@ function Seance(props) {
           data={repsWeights}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          scrollEnabled={false}
         />
       </ScrollView>
       <Eclipse pages={pages} currentPage={currentPage} style={styles.eclipse} />
@@ -91,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(28,28,30,1)",
     alignItems: "center",
-    justifyContent: "center", // Ajouté pour centrer le contenu
+    justifyContent: "center",
   },
   profileContainer: {
     position: 'absolute',

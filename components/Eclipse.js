@@ -15,7 +15,7 @@ function Eclipse({ style, pages, currentPage }) {
             <Ellipse
               stroke="rgba(230, 230, 230,1)"
               strokeWidth={0}
-              fill={index === currentPage ? "rgba(0,0,0,1)" : "rgba(44,44,46,1)"}
+              fill={index === currentPage ? "rgba(208,253,62,1)" : "rgba(0,0,0,1)"}
               cx={5}
               cy={5}
               rx={5}
