@@ -4,7 +4,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import List from "../components/List";
 import TabButton from "../components/TabButton";
 import { useNavigation } from "@react-navigation/native";
-import HomeHeaderInfo from "../components/HomeHeaderInfo";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
 import { RefreshControl } from "react-native";

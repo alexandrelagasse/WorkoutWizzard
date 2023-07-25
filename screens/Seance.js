@@ -1,114 +1,203 @@
-import React, { Component, useState } from "react";
-import { StyleSheet, View, StatusBar, Text } from "react-native";
-import InfoMax from "../components/InfoMax";
-import Exe from "../components/Exe";
-import Series from "../components/Series";
+import React, { useState } from "react";
+import { StyleSheet, View, StatusBar, Text, FlatList } from "react-native";
 import Eclipse from "../components/Eclipse";
 import BackButton from "../components/BackButton";
 import Next from "../components/Next";
-import { TouchableOpacity } from "react-native";
+import EnterRepsWeight from "../components/EnterRepsWeight";
+import { Image } from "react-native";
+import { ScrollView } from "react-native";
 
 function Seance(props) {
-  const pages = [0, 1, 2, 3, 4]; // Vous pouvez remplir ce tableau avec les données de vos pages.
+  const pages = [0, 1, 2, 3, 4];
   const [currentPage, setCurrentPage] = useState(0); // Page initiale est 0
+
+  const renderItem = ({ item }) => (
+    <EnterRepsWeight style={styles.enterRepsWeight} />
+  );
+
+  const repsWeights = [
+    { id: '1', reps: 10, weight: 50 },
+    { id: '2', reps: 8, weight: 60 },
+    { id: '3', reps: 6, weight: 70 },
+  ];
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <Text style={styles.title}>Day 01 Pec / Triceps</Text>
-      <Text style={styles.subtitle}>Programme PPL</Text>
+      <Image
+        source={require("../assets/images/pexels-leon-ardho-1552242.jpg")}
+        resizeMode="cover"
+        style={styles.image}
+      />
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.rect}>
+          <Text style={styles.title}>Day 01 Pec / Triceps</Text>
+          <Text style={styles.nameProg}>Programme PPL</Text>
+          <View style={styles.profileContainer}>
+            <Image
+              source={require("../assets/images/dvpch.jpeg")}
+              style={styles.profileImage}
+            />
+          </View>
+          <View style={styles.sep}></View>
+          <Text style={styles.nameExe}>Développé couché à la barre</Text>
+          <View style={styles.seriesRow}>
+            <View style={styles.item}>
+              <Text style={textStyle}>series</Text>
+              <Text style={textStyle}>4</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={textStyle}>reps</Text>
+              <Text style={textStyle}>10</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>single</Text>
+              <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>130 kg</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={textStyle}>last</Text>
+              <Text style={textStyle}>80 kg</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={textStyle}>repos</Text>
+              <Text style={textStyle}>00:30</Text>
+            </View>
+          </View>
+        </View>
+
+        <FlatList
+          data={repsWeights}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </ScrollView>
       <Eclipse pages={pages} currentPage={currentPage} style={styles.eclipse} />
       <View style={styles.navigationButtons}>
-      <BackButton style={styles.backButton} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <Next style={styles.nextButton} currentPage={currentPage} setCurrentPage={setCurrentPage} pagesLength={pages.length} />
+        <BackButton style={styles.backButton} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Next style={styles.nextButton} currentPage={currentPage} setCurrentPage={setCurrentPage} pagesLength={pages.length} />
       </View>
     </View>
   );
 }
+
+const textStyle = {
+  fontFamily: "open-sans-regular",
+  color: "rgba(255,255,255,1)",
+  fontSize: 14,
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(28,28,30,1)"
+    backgroundColor: "rgba(28,28,30,1)",
+    alignItems: "center",
+    justifyContent: "center", // Ajouté pour centrer le contenu
+  },
+  profileContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+  },
+  scrollView: {
+    flex: 0.8,
+    width: '90%',
+    marginTop: 75,
+    height: 1000,
+  },
+  enterRepsWeight: {
+    marginLeft: 55,
+    marginTop: 40,
+    height: 100,
+    width: '80%',
+  },
+  image: {
+    position: "absolute",
+    top: 0,
+    left: -100,
+    width: "350%",
+    height: "100%",
+  },
+  rect: {
+    width: '100%', // Utilise toute la largeur disponible
+    height: 200,
+    backgroundColor: "rgba(28,28,30,1)",
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: "rgba(44,44,46,1)",
+    marginTop: 0, // Augmenté pour descendre le rect
+    alignSelf: "center", // Ajouté pour centrer le rect
   },
   title: {
-    fontFamily: "open-sans-800",
+    fontFamily: "open-sans-600",
     color: "rgba(255,255,255,1)",
     height: 28,
-    width: 220,
-    fontSize: 20,
-    marginTop: 83,
-    marginLeft: 78
+    width: 250,
+    fontSize: 24,
+    marginTop: 10,
+    marginLeft: 22
   },
-  subtitle: {
+  nameProg: {
     fontFamily: "open-sans-regular",
     color: "rgba(208,253,62,1)",
     height: 21,
     width: 200,
-    fontSize: 13,
-    marginTop: 6,
-    marginLeft: 78
+    fontSize: 16,
+    marginTop: 12,
+    marginLeft: 22
   },
-  infoMax: {
-    height: 74,
+  sep: {
     width: 231,
-    marginTop: 55,
-    marginLeft: 78
+    height: 1,
+    backgroundColor: "rgba(58,58,60,1)",
+    marginTop: 10,
+    alignSelf: "center"
   },
-  objectives: {
+  nameExe: {
     fontFamily: "open-sans-700",
     color: "rgba(255,255,255,1)",
-    height: 27,
-    width: 88,
-    fontSize: 18,
-    marginTop: 25,
-    marginLeft: 29
-  },
-  exe: {
-    width: 324,
-    height: 113,
-    shadowColor: "rgba(0,0,0,1)",
-    shadowOffset: {
-      width: 3,
-      height: 3
-    },
-    elevation: 5,
-    shadowOpacity: 0.01,
-    shadowRadius: 0,
-    marginTop: 8,
-    marginLeft: 33
-  },
-  seriesContainer: {
-    flexDirection: "row",
-    marginTop: 16,
-    marginLeft: 12,
-    marginRight: 36
-  },
-  seriesMarker: {
-    width: 20,
     height: 20,
-    backgroundColor: "rgba(44,44,46,1)",
-    borderRadius: 100,
-    marginTop: 36
+    width: 269,
+    textAlign: "center",
+    fontSize: 18,
+    marginTop: 11,
+    marginLeft: 9
   },
-  series: {
-    flex: 1,
+  seriesRow: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    marginTop: 11,
+    marginLeft: 18,
+    marginRight: 20,
+  },
+  item: {
     alignItems: "center",
-    marginLeft: 15
   },
   eclipse: {
     height: 10,
     width: 10,
-    marginTop: 28,
-    marginLeft: 133
+    marginTop: 30,
+  },
+  footer: {
+    flex: 0.2, // Prend 10% de l'espace disponible
+    justifyContent: 'center',
   },
   navigationButtons: {
+    marginTop: 20,
+    marginBottom: 40,
     flexDirection: "row",
-    marginTop: 22,
-    marginLeft: 51,
-    marginRight: 55
+    justifyContent: "space-around",
+    width: "100%",
+    paddingHorizontal: 10,
   },
+
   backButton: {
     height: 54,
     width: 54
@@ -116,7 +205,6 @@ const styles = StyleSheet.create({
   nextButton: {
     height: 54,
     width: 132,
-    marginLeft: 83
   },
 });
 

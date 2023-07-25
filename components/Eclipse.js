@@ -30,12 +30,13 @@ function Eclipse({ style, pages, currentPage }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row"
+    flexDirection: "row",
+    justifyContent: 'center',  // Ajouté
   },
   selectedRow: {
     height: 10,
     flexDirection: "row",
-    flex: 1,
+    justifyContent: 'center',  // Ajouté
   },
   ellipse: {
     width: 8,
