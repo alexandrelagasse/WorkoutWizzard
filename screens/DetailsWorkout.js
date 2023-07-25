@@ -182,9 +182,9 @@ const styles = StyleSheet.create({
     },
     iconBack: {
         color: "rgba(255,255,255,1)",
-        fontSize: 35,
-        height: 39,
-        width: 35,
+        fontSize: 25,
+        height: 30,
+        width: 30,
         marginLeft: 15
     },
     min: {

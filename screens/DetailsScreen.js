@@ -176,10 +176,10 @@ const styles = StyleSheet.create({
   icon: {
     color: "rgba(255,255,255,1)",
     fontSize: 25,
-    height: 39,
-    width: 35,
-    marginLeft: 10,
-    marginRight: 5
+    height: 30,
+    width: 30,
+    marginLeft: 15,
+    marginRight: 15
   },
   group2: {
     width: 335,

@@ -10,6 +10,7 @@ import DetailsScreen from './screens/DetailsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetailsWorkout from './screens/DetailsWorkout';
 import Seance from './screens/Seance';
+import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -26,8 +27,33 @@ function HomeStackScreen() {
 }
 
 function TabNavigator() {
+  const screenOptions = ({ route }) => ({
+    tabBarIcon: ({ focused, color, size }) => {
+      let iconName;
+
+      if (route.name === 'HomeTab') {
+        iconName = focused ? 'home' : 'home-outline';
+      } else if (route.name === 'Stats') {
+        iconName = focused ? 'stats-chart' : 'stats-chart-outline';
+      }
+
+      return <Ionicons name={iconName} size={size} color={color} />;
+    },
+    tabBarActiveTintColor: '#D0FD3E',
+    tabBarInactiveTintColor: 'gray',
+    borderTopWidth: 0,
+    tabBarStyle: {
+      backgroundColor: '#1C1C1E',
+      height: 80,
+    },
+    tabBarItemStyle: {
+      margin: 5,
+      borderRadius: 10,
+    },
+  });
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen name="HomeTab" options={{ headerShown: false }} component={HomeStackScreen} />
       <Tab.Screen name="Stats" component={Stats} />
     </Tab.Navigator>

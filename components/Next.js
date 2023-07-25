@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 
-function Next(props) {
+function Next({ currentPage, setCurrentPage, pagesLength, style }) {
+  const handleNextClick = () => {
+    if (currentPage < pagesLength - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
-    <TouchableOpacity style={[styles.container, props.style]}>
+    <TouchableOpacity style={[styles.container, style]} onPress={handleNextClick}>
       <View style={styles.rect}>
         <View style={styles.textRow}>
           <Text style={styles.text}>Next</Text>
