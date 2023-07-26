@@ -4,10 +4,12 @@ import Svg, { Ellipse } from "react-native-svg";
 import SimpleLineIconsIcon from "react-native-vector-icons/SimpleLineIcons";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props }) {
     const [isPressedReps, setIsPressedReps] = useState(false);
     const [isPressedWeight, setIsPressedWeight] = useState(false);
+    const navigation = useNavigation();
 
     const fadeAnim = useState(new Animated.Value(0))[0];
     const progressAnim = useState(new Animated.Value(0))[0];
@@ -39,6 +41,7 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                 useNativeDriver: true,
             }).start();
         }
+        navigation.navigate('PickNb');
     };
 
     const handlePressWeight = () => {
@@ -53,6 +56,7 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                 useNativeDriver: true,
             }).start();
         }
+        navigation.navigate('PickNb');
     };
 
     return (

@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DetailsWorkout from './screens/DetailsWorkout';
 import Seance from './screens/Seance';
 import { Ionicons } from '@expo/vector-icons';
+import PickNb from './screens/PickNb';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -65,6 +66,7 @@ function MainStackScreen() {
     <MainStack.Navigator>
       <MainStack.Screen name="TabNavigator" options={{ headerShown: false }} component={TabNavigator} />
       <MainStack.Screen name="Seance" options={{headerShown: false}} component={Seance} />
+      <MainStack.Screen name="PickNb" options={{headerShown: false}} component={PickNb} />
     </MainStack.Navigator>
   );
 }
