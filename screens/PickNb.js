@@ -1,82 +1,63 @@
-import React, { useRef, useEffect } from 'react';
-import { Animated, StyleSheet, View, StatusBar, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, StatusBar, Text, TouchableOpacity } from 'react-native';
+import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
-function PickNb() {
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const flatListRef = useRef(null);
-    const windowWidth = Dimensions.get('window').width;
-    const itemWidth = windowWidth / 7;
-    const selected = scrollX.interpolate({
-        inputRange: [0, itemWidth * 100],
-        outputRange: [1, 100],
-        extrapolate: 'clamp',
-    });
-    const numbers = Array.from({ length: 7 }, (_, i) => i - 3);
+function PickNb({ route }) {
+    const isWeight = route.params.isWeight;
+    const selectedNumber = route.params.selectedNumber;  // get the selected number from route params
+    const [selected, setSelected] = useState(selectedNumber);
+    const ref = React.useRef();
+    const navigation = useNavigation();
+
+    const numbers = isWeight
+        ? Array.from({ length: 300 }, (_, i) => i + 1 + ' Kg')
+        : Array.from({ length: 51 }, (_, i) => i + 1 + ' reps');
+
+
+        const handleSubmit = () => {
+            if (isWeight) {
+                navigation.navigate('EnterRepsWeight', { updatedWeight: selected });
+            } else {
+                navigation.navigate('EnterRepsWeight', { updatedReps: selected });
+            }
+        };
+        
 
     useEffect(() => {
-        scrollX.setValue((50 - 1) * itemWidth);
-    }, []);
+        if (selected > (isWeight ? 300 : 51)) {
+            setSelected(isWeight ? 300 : 51);
+        } else if (selected < 1) {
+            setSelected(1);
+        }
+    }, [selected]);
 
-    const renderItem = ({ index }) => {
-        const number = Animated.add(selected, numbers[index]);
-        const inputRange = [
-            (index - 2) * itemWidth,
-            index * itemWidth,
-            (index + 2) * itemWidth,
-        ];
-        const scale = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.8, 1.5, 0.8],
-            extrapolate: 'clamp',
-        });
-        const opacity = scrollX.interpolate({
-            inputRange,
-            outputRange: [0.3, 1, 0.3],
-            extrapolate: 'clamp',
-        });
-        return (
-            <Animated.View
-                style={{
-                    ...styles.text,
-                    transform: [{ scale }],
-                    opacity,
-                    width: itemWidth,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Animated.Text>
-                    {number}
-                </Animated.Text>
-            </Animated.View>
-        );
+    const onValueChange = (data, selectedIndex) => {
+        setSelected(selectedIndex + 1);
     };
 
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />
-            <Text style={styles.title}>Choose your number</Text>
-            <View style={styles.numberRow}>
-                <Animated.FlatList
-                    ref={flatListRef}
-                    data={numbers}
-                    keyExtractor={(item) => item.toString()}
-                    renderItem={renderItem}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    snapToInterval={itemWidth}
-                    decelerationRate="fast"
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        {
-                            useNativeDriver: true,
-                        }
-                    )}
-                    scrollEventThrottle={16}
+            <Text style={styles.title}>Choose your {isWeight ? 'weight' : 'reps'}</Text>
+            <View style={styles.pickerContainer}>
+                <ScrollPicker
+                    ref={ref}
+                    style={styles.wheelPicker}
+                    dataSource={numbers}
+                    selectedIndex={selected - 1}
+                    onValueChange={onValueChange}
+                    itemHeight={60}
+                    wrapperHeight={300}
+                    wrapperWidth={300}
+                    wrapperBackground="rgba(28,28,30,1)"
+                    highlightColor={"#d8d8d8"}
+                    highlightBorderWidth={1}
+                    activeItemTextStyle={styles.wheelPickerActiveItem}
+                    itemTextStyle={styles.wheelPickerItem}
                 />
-                <View style={styles.cursor} />
             </View>
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                 <Text style={styles.submit}>Submit</Text>
             </TouchableOpacity>
         </View>
@@ -86,43 +67,36 @@ function PickNb() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "rgba(28,28,30,1)"
+        backgroundColor: "rgba(28,28,30,1)",
+        alignItems: "center",
+        justifyContent: "center"
     },
     title: {
         fontFamily: "open-sans-700",
         color: "rgba(255,255,255,1)",
         fontSize: 32,
-        marginTop: 132,
-        marginLeft: 21
+        position: "absolute",
+        top: 132
     },
-    numberRow: {
-        width: "100%",
-        height: 60, // height increased to fit the text
-        marginTop: 199,
-        alignSelf: "center",
-        overflow: "hidden",
-        position: 'relative',
+    pickerContainer: {
+        width: 250,
+        height: 300,
+        justifyContent: 'center',
+        backgroundColor: "rgba(0,0,0,1)",
     },
-    numberRowContent: {
-        flexGrow: 1,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    wheelPicker: {
+        height: 300,
+        width: 300
     },
-    text: {
+    wheelPickerItem: {
+        fontSize: 22,
         fontFamily: "open-sans-600",
         color: "rgba(74,74,74,1)",
-        paddingHorizontal: 8,
     },
-    cursor: {
-        width: 35,
-        height: 35,
-        backgroundColor: "#E6E6E6",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        position: "absolute",
-        left: "50%",
-        bottom: 0,
-        transform: [{ translateX: -17.5 }] // half of the cursor's width to center it
+    wheelPickerActiveItem: {
+        fontSize: 30,
+        fontFamily: "open-sans-600",
+        color: "rgba(208,253,62,1)",
     },
     submitButton: {
         width: 242,
@@ -130,8 +104,9 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(208,253,62,1)",
         borderRadius: 100,
         justifyContent: "center",
-        marginTop: 289,
-        marginLeft: 66
+        marginTop: 50,
+        position: "absolute", // Position button absolute to avoid shifting down due to the picker container
+        bottom: 50
     },
     submit: {
         fontFamily: "open-sans-600",

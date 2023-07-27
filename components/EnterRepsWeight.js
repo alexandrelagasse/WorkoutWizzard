@@ -4,12 +4,16 @@ import Svg, { Ellipse } from "react-native-svg";
 import SimpleLineIconsIcon from "react-native-vector-icons/SimpleLineIcons";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { useCallback } from "react";
 
-function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props }) {
+function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 1, reps = 1, ...props }) {
     const [isPressedReps, setIsPressedReps] = useState(false);
     const [isPressedWeight, setIsPressedWeight] = useState(false);
+    const [selectedReps, setSelectedReps] = useState(reps);
+    const [selectedWeight, setSelectedWeight] = useState(weight);
     const navigation = useNavigation();
+    const route = useRoute(); // Ajoutez ceci
 
     const fadeAnim = useState(new Animated.Value(0))[0];
     const progressAnim = useState(new Animated.Value(0))[0];
@@ -41,7 +45,7 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                 useNativeDriver: true,
             }).start();
         }
-        navigation.navigate('PickNb');
+        navigation.navigate('PickNb', { isWeight: false, selectedNumber: selectedReps });
     };
 
     const handlePressWeight = () => {
@@ -56,8 +60,25 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                 useNativeDriver: true,
             }).start();
         }
-        navigation.navigate('PickNb');
+        navigation.navigate('PickNb', { isWeight: true, selectedNumber: selectedWeight });
     };
+
+    useEffect(() => {
+        if(route.params){
+            const { updatedReps, updatedWeight } = route.params;
+            if(updatedReps) setSelectedReps(updatedReps);
+            if(updatedWeight) setSelectedWeight(updatedWeight);
+        }
+    
+        if (isPressedReps && isPressedWeight) {
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [route.params, fadeAnim, isPressedReps, isPressedWeight]);
+    
 
     return (
         <View style={[styles.container, props.style]}>
@@ -89,7 +110,7 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                     )}
                 </View>
                 <TouchableOpacity style={[styles.bouton, isPressedReps ? styles.boutonPressed : {}, { marginLeft: 75 }]} onPress={handlePressReps}>
-                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>10 reps</Text>
+                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>{selectedReps} reps</Text>
                     <SimpleLineIconsIcon
                         name="refresh"
                         style={styles.icon}
@@ -97,7 +118,7 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, ...props 
                 </TouchableOpacity>
                 <View style={styles.rect3} />
                 <TouchableOpacity style={[styles.bouton, isPressedWeight ? styles.boutonPressed : {}, { marginLeft: 40 }]} onPress={handlePressWeight}>
-                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>10 Kg</Text>
+                    <Text style={[styles.nb, { marginTop: -30, marginLeft: 0 }]}>{selectedWeight} Kg</Text>
                     <MaterialCommunityIconsIcon
                         name="dumbbell"
                         style={styles.icon}

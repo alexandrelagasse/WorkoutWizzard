@@ -16,6 +16,8 @@ function Seance(props) {
     { id: '2', reps: 8, weight: 60},
     { id: '3', reps: 6, weight: 70},
   ];
+  const reps = 12;
+  const weight = 50;
 
   const [itemsCompleted, setItemsCompleted] = useState(new Array(repsWeights.length).fill(false));
 
@@ -27,6 +29,8 @@ function Seance(props) {
           hideProgressBar={isLastItem} 
           disabled={index > 0 && !itemsCompleted[index - 1]}
           nbSeries={index + 1}
+          reps={item.reps}
+          weight={item.weight}
           onComplete={() => {
             const newItemsCompleted = [...itemsCompleted];
             newItemsCompleted[index] = true;
