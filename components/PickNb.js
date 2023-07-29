@@ -3,12 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, StatusBar, Text, TouchableOpacity } from 'react-native';
 import ScrollPicker from 'react-native-wheel-scrollview-picker';
 
-function PickNb({ route }) {
-    const isWeight = route.params.isWeight;
-    const selectedNumber = route.params.selectedNumber;  // get the selected number from route params
+function PickNb({ isWeight, selectedNumber, onSubmit }) {
     const [selected, setSelected] = useState(selectedNumber);
     const ref = React.useRef();
-    const navigation = useNavigation();
 
     const numbers = isWeight
         ? Array.from({ length: 300 }, (_, i) => i + 1 + ' Kg')
@@ -16,11 +13,7 @@ function PickNb({ route }) {
 
 
         const handleSubmit = () => {
-            if (isWeight) {
-                navigation.navigate('EnterRepsWeight', { updatedWeight: selected });
-            } else {
-                navigation.navigate('EnterRepsWeight', { updatedReps: selected });
-            }
+            onSubmit(selected);
         };
         
 

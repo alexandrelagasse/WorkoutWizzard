@@ -1,45 +1,61 @@
-import React, { useState } from "react";
-import { StyleSheet, View, StatusBar, Text, FlatList } from "react-native";
-import Eclipse from "../components/Eclipse";
+import React, { useRef, useState } from "react";
+import { StyleSheet, View, StatusBar, Text, FlatList, Image, ScrollView } from "react-native";
 import BackButton from "../components/BackButton";
 import Next from "../components/Next";
 import EnterRepsWeight from "../components/EnterRepsWeight";
-import { Image } from "react-native";
-import { ScrollView } from "react-native";
+import Swiper from 'react-native-swiper';
+import { useNavigation } from "@react-navigation/native";
+
+const exercises = [
+  {
+    id: '1',
+    title: "Développé couché à la barre",
+    program: "Programme PPL",
+    repsWeights: [
+      { reps: 10, weight: 50 },
+      { reps: 8, weight: 60 },
+      { reps: 6, weight: 70 },
+    ]
+  },
+  {
+    id: '2',
+    title: "Développé couché à la barre incliné",
+    program: "Programme PPL",
+    repsWeights: [
+      { reps: 10, weight: 50 },
+      { reps: 8, weight: 60 },
+      { reps: 6, weight: 70 },
+    ]
+  },
+  // Ajoutez autant d'exercices que vous voulez ici
+];
 
 function Seance(props) {
-  const pages = [0, 1, 2, 3, 4];
-  const [currentPage, setCurrentPage] = useState(0); // Page initiale est 0
 
-  const repsWeights = [
-    { id: '1', reps: 10, weight: 50},
-    { id: '2', reps: 8, weight: 60},
-    { id: '3', reps: 6, weight: 70},
-  ];
-  const reps = 12;
-  const weight = 50;
+  const swiperRef = useRef(null);
 
-  const [itemsCompleted, setItemsCompleted] = useState(new Array(repsWeights.length).fill(false));
+  const [itemsCompleted, setItemsCompleted] = useState(new Array(exercises.length).fill(false));
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigation = useNavigation();
 
-  const renderItem = ({ item, index }) => {
-    const isLastItem = index === repsWeights.length - 1;
+  const renderItem = (exercise, index) => {
+    const isLastItem = index === exercises.length - 1;
     return (
-        <EnterRepsWeight 
-          style={styles.enterRepsWeight} 
-          hideProgressBar={isLastItem} 
-          disabled={index > 0 && !itemsCompleted[index - 1]}
-          nbSeries={index + 1}
-          reps={item.reps}
-          weight={item.weight}
-          onComplete={() => {
-            const newItemsCompleted = [...itemsCompleted];
-            newItemsCompleted[index] = true;
-            setItemsCompleted(newItemsCompleted);
-          }}
-        />
+      <EnterRepsWeight
+        style={styles.enterRepsWeight}
+        hideProgressBar={isLastItem}
+        disabled={index > 0 && !itemsCompleted[index - 1]}
+        nbSeries={index + 1}
+        reps={exercise.reps}
+        weight={exercise.weight}
+        onComplete={() => {
+          const newItemsCompleted = [...itemsCompleted];
+          newItemsCompleted[index] = true;
+          setItemsCompleted(newItemsCompleted);
+        }}
+      />
     );
-};
-
+  };
 
   return (
     <View style={styles.container}>
@@ -49,54 +65,78 @@ function Seance(props) {
         resizeMode="cover"
         style={styles.image}
       />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.rect}>
-          <Text style={styles.title}>Day 01 Pec / Triceps</Text>
-          <Text style={styles.nameProg}>Programme PPL</Text>
-          <View style={styles.profileContainer}>
-            <Image
-              source={require("../assets/images/dvpch.jpeg")}
-              style={styles.profileImage}
-            />
-          </View>
-          <View style={styles.sep}></View>
-          <Text style={styles.nameExe}>Développé couché à la barre</Text>
-          <View style={styles.seriesRow}>
-            <View style={styles.item}>
-              <Text style={textStyle}>series</Text>
-              <Text style={textStyle}>4</Text>
+      <Swiper
+        loop={false}
+        activeDotColor={"rgba(208,253,62,1)"}
+        ref={swiperRef}
+      >
+        {exercises.map((exercise, index) => (
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.rect}>
+              <Text style={styles.title}>Day 01 Pec / Triceps</Text>
+              <Text style={styles.nameProg}>{exercise.program}</Text>
+              <View style={styles.profileContainer}>
+                <Image
+                  source={require("../assets/images/dvpch.jpeg")}
+                  style={styles.profileImage}
+                />
+              </View>
+              <View style={styles.sep}></View>
+              <Text style={styles.nameExe}>{exercise.title}</Text>
+              <View style={styles.seriesRow}>
+                <View style={styles.item}>
+                  <Text style={textStyle}>series</Text>
+                  <Text style={textStyle}>4</Text>
+                </View>
+                <View style={styles.item}>
+                  <Text style={textStyle}>reps</Text>
+                  <Text style={textStyle}>10</Text>
+                </View>
+                <View style={styles.item}>
+                  <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>single</Text>
+                  <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>130 kg</Text>
+                </View>
+                <View style={styles.item}>
+                  <Text style={textStyle}>last</Text>
+                  <Text style={textStyle}>80 kg</Text>
+                </View>
+                <View style={styles.item}>
+                  <Text style={textStyle}>repos</Text>
+                  <Text style={textStyle}>00:30</Text>
+                </View>
+              </View>
             </View>
-            <View style={styles.item}>
-              <Text style={textStyle}>reps</Text>
-              <Text style={textStyle}>10</Text>
-            </View>
-            <View style={styles.item}>
-              <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>single</Text>
-              <Text style={{ ...textStyle, color: "rgba(208,253,62,1)" }}>130 kg</Text>
-            </View>
-            <View style={styles.item}>
-              <Text style={textStyle}>last</Text>
-              <Text style={textStyle}>80 kg</Text>
-            </View>
-            <View style={styles.item}>
-              <Text style={textStyle}>repos</Text>
-              <Text style={textStyle}>00:30</Text>
-            </View>
-          </View>
-        </View>
 
-        <FlatList
-          data={repsWeights}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-        />
-      </ScrollView>
-      <Eclipse pages={pages} currentPage={currentPage} style={styles.eclipse} />
+            <FlatList
+              data={exercise.repsWeights}
+              renderItem={({item}) => renderItem(item, index)}
+              keyExtractor={(item, index) => index.toString()}
+              scrollEnabled={false}
+            />
+
+          </ScrollView>
+        ))}
+      </Swiper>
       <View style={styles.navigationButtons}>
-        <BackButton style={styles.backButton} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <Next style={styles.nextButton} currentPage={currentPage} setCurrentPage={setCurrentPage} pagesLength={pages.length} />
-      </View>
+    <BackButton
+      style={styles.backButton}
+      onPress={() => {
+        if (currentIndex === 0) {
+          navigation.goBack();
+        } else {
+          setCurrentIndex(currentIndex - 1);
+          swiperRef.current.scrollBy(-1);
+        }
+      }}
+    />
+    <Next
+      style={styles.nextButton}
+      onPress={() => {
+        setCurrentIndex(currentIndex + 1);
+        swiperRef.current.scrollBy(1);
+      }}
+    />
+  </View>
     </View>
   );
 }
@@ -201,24 +241,18 @@ const styles = StyleSheet.create({
   item: {
     alignItems: "center",
   },
-  eclipse: {
-    height: 10,
-    width: 10,
-    marginTop: 30,
-  },
   footer: {
     flex: 0.2, // Prend 10% de l'espace disponible
     justifyContent: 'center',
   },
   navigationButtons: {
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 40,
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
     paddingHorizontal: 10,
   },
-
   backButton: {
     height: 54,
     width: 54

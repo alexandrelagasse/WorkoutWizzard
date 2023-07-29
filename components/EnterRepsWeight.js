@@ -4,16 +4,20 @@ import Svg, { Ellipse } from "react-native-svg";
 import SimpleLineIconsIcon from "react-native-vector-icons/SimpleLineIcons";
 import MaterialCommunityIconsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { useCallback } from "react";
+import PickNb from "./PickNb";
+import { Modal } from "react-native";
 
-function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 1, reps = 1, ...props }) {
+function EnterRepsWeight({ hideProgressBar = false, nbSeries, weight = 1, reps = 1, ...props }) {
     const [isPressedReps, setIsPressedReps] = useState(false);
     const [isPressedWeight, setIsPressedWeight] = useState(false);
     const [selectedReps, setSelectedReps] = useState(reps);
     const [selectedWeight, setSelectedWeight] = useState(weight);
-    const navigation = useNavigation();
-    const route = useRoute(); // Ajoutez ceci
+
+    const [submittedReps, setSubmittedReps] = useState(false);
+    const [submittedWeight, setSubmittedWeight] = useState(false);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isWeightModal, setIsWeightModal] = useState(false);
 
     const fadeAnim = useState(new Animated.Value(0))[0];
     const progressAnim = useState(new Animated.Value(0))[0];
@@ -24,20 +28,19 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 
     });
 
     useEffect(() => {
-        if (isPressedReps && isPressedWeight) {
+        if (submittedReps && submittedWeight) {
             Animated.timing(progressAnim, {
                 toValue: 1,
                 duration: 1000,
                 useNativeDriver: false,
             }).start();
         }
-    }, [isPressedReps, isPressedWeight]);
+    }, [submittedReps, submittedWeight]);
 
     const handlePressReps = () => {
-        if (onPress) {
-            onPress();
-        }
         setIsPressedReps(!isPressedReps);
+        setModalVisible(true);
+        setIsWeightModal(false);
         if (!isPressedReps && isPressedWeight) {
             Animated.timing(fadeAnim, {
                 toValue: 1,
@@ -45,14 +48,12 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 
                 useNativeDriver: true,
             }).start();
         }
-        navigation.navigate('PickNb', { isWeight: false, selectedNumber: selectedReps });
     };
 
     const handlePressWeight = () => {
-        if (onPress) {
-            onPress();
-        }
         setIsPressedWeight(!isPressedWeight);
+        setModalVisible(true);
+        setIsWeightModal(true);
         if (!isPressedWeight && isPressedReps) {
             Animated.timing(fadeAnim, {
                 toValue: 1,
@@ -60,26 +61,19 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 
                 useNativeDriver: true,
             }).start();
         }
-        navigation.navigate('PickNb', { isWeight: true, selectedNumber: selectedWeight });
     };
 
-    useEffect(() => {
-        if(route.params){
-            const { updatedReps, updatedWeight } = route.params;
-            if(updatedReps) setSelectedReps(updatedReps);
-            if(updatedWeight) setSelectedWeight(updatedWeight);
+    const handleNumberSubmit = (number) => {
+        if (isWeightModal) {
+            setSelectedWeight(number);
+            setSubmittedWeight(true);
+        } else {
+            setSelectedReps(number);
+            setSubmittedReps(true);
         }
+        setModalVisible(false);
+    }
     
-        if (isPressedReps && isPressedWeight) {
-            Animated.timing(fadeAnim, {
-                toValue: 1,
-                duration: 500,
-                useNativeDriver: true,
-            }).start();
-        }
-    }, [route.params, fadeAnim, isPressedReps, isPressedWeight]);
-    
-
     return (
         <View style={[styles.container, props.style]}>
             <View style={styles.eclipseSerieStackColumnRow}>
@@ -125,6 +119,13 @@ function EnterRepsWeight({ hideProgressBar = false, onPress, nbSeries, weight = 
                     />
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <PickNb isWeight={isWeightModal} selectedNumber={isWeightModal ? selectedWeight : selectedReps} onSubmit={handleNumberSubmit} />
+            </Modal>
         </View>
     );
 }

@@ -4,19 +4,11 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Svg, { Ellipse } from "react-native-svg";
 import Icon from "react-native-vector-icons/Ionicons";
 
-function BackButton({ currentPage, setCurrentPage, style }) {
+function BackButton({ onPress , style }) {
   const navigation = useNavigation();
 
-  const handleBackClick = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    } else {
-      navigation.goBack();
-    }
-  };
-
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={handleBackClick}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress }>
       <View style={styles.ellipseStack}>
         <Svg viewBox="0 0 53.52 54" style={styles.ellipse}>
           <Ellipse
