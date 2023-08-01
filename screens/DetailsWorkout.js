@@ -117,9 +117,9 @@ function DetailsWorkout(props) {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-                ListHeaderComponent={ListHeader} // Use ListHeaderComponent
+                ListHeaderComponent={ListHeader}
                 ListFooterComponent={ListFooter}
-                style={{backgroundColor: "rgba(28,28,30,1)"}} // Ajout d'une couleur de fond à la FlatList
+                style={{backgroundColor: "rgba(28,28,30,1)"}}
             />
             <TouchableOpacity
                 style={styles.button}
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     min: {
         fontFamily: 'open-sans-regular',
         color: 'rgba(255,255,255,1)',
-        fontSize: 14, // Augmentez la taille de la police pour un meilleur affichage sur les étiquettes plus grandes.
+        fontSize: 14,
     },
     image: {
         flex: 1,

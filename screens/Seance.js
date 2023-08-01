@@ -27,7 +27,6 @@ const exercises = [
       { reps: 6, weight: 70 },
     ]
   },
-  // Ajoutez autant d'exercices que vous voulez ici
 ];
 
 function Seance(props) {
@@ -187,14 +186,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   rect: {
-    width: '100%', // Utilise toute la largeur disponible
+    width: '100%',
     height: 200,
     backgroundColor: "rgba(28,28,30,1)",
     borderRadius: 25,
     borderWidth: 2,
     borderColor: "rgba(44,44,46,1)",
-    marginTop: 0, // Augmenté pour descendre le rect
-    alignSelf: "center", // Ajouté pour centrer le rect
+    alignSelf: "center",
   },
   title: {
     fontFamily: "open-sans-600",
@@ -242,7 +240,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footer: {
-    flex: 0.2, // Prend 10% de l'espace disponible
+    flex: 0.2,
     justifyContent: 'center',
   },
   navigationButtons: {

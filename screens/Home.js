@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(28,28,30,1)",
-    padding: 15,  // Ajoutez un padding pour donner de l'espace aux éléments à l'intérieur du conteneur
+    padding: 15,
   },
   badge: {
     position: 'absolute',
@@ -183,20 +183,20 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     fontSize: 17,
     marginTop: 20,
-    marginLeft: 15,  // Changez la marge pour correspondre à celle du conteneur
+    marginLeft: 15,
   },
   listSubtitle: {
     fontFamily: "open-sans-regular",
     color: "#D0FD3E",
     fontSize: 12,
     marginTop: 20,
-    marginRight: 15, // Changez la marge pour correspondre à celle du conteneur
+    marginRight: 15,
     textAlign: 'right',
   },
   listHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Assurez-vous que les éléments sont centrés verticalement
+    alignItems: 'center',
   },
 });
 
